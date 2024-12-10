@@ -36,6 +36,7 @@ base16ct = { version="0.2", features=["alloc"], optional=true }
 base64ct = { version="1.5", features=["alloc"], optional=true }
 crossbeam-channel = "0.5"
 fnv = "1.0"
+greptimedb-ingester = { git = "https://github.com/GreptimeTeam/greptimedb-ingester-rust.git", rev = "2e6b0c5eb6a5e7549c3100e4d356b07d15cce66d" }
 indexmap = { version="2.2", features=["serde"] }
 lazy_static = "1.2"
 libpcap-tools = { path="../libpcap-tools" }
@@ -48,10 +49,12 @@ pnet_macros_support = "0.35"
 pnet_packet = "0.35"
 rand="0.8"
 rand_chacha = "0.3"
+reqwest = { version = "0.12", features = ["blocking"] }
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
 sha1 = { version="0.10", features=["std"], optional=true }
 tls-parser = { version="0.12", optional=true }
+tokio = "1.42"
 tracing = { version="0.1", features=["log"] }
 
 [dependencies.rusticata]

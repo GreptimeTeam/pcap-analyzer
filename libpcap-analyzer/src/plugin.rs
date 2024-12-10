@@ -181,6 +181,9 @@ macro_rules! plugin_builder {
                 let protos = plugin.plugin_type();
                 let safe_p = $crate::build_safeplugin!(plugin);
                 let id = registry.add_plugin(safe_p);
+                if protos & $crate::PLUGIN_L1 != 0 {
+                    registry.register_layer(1, 0, id)?;
+                }
                 if protos & $crate::PLUGIN_L2 != 0 {
                     // XXX no filter, so register for all
                     registry.register_layer(2, 0, id)?;

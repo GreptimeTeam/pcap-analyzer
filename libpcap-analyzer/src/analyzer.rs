@@ -591,6 +591,17 @@ fn handle_l4_tcp(
     trace!("5-t: {}", five_tuple);
     let now = packet.ts;
 
+    handle_l4_common(
+        packet,
+        ctx,
+        l4_data,
+        l3_info,
+        src_port,
+        dst_port,
+        Some(tcp.payload()),
+        analyzer,
+    )?;
+
     let flow_id = {
         // flows modification section
         let flows = &mut analyzer.flows;

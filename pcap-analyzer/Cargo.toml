@@ -25,7 +25,7 @@ clap = { version = "4.4", features = ["cargo", "derive"] }
 flate2 = { version = "1.0", features = ["zlib"], default-features = false }
 libpcap-analyzer = { version="0.1.0", path="../libpcap-analyzer" }
 libpcap-tools = { version="0.1.0", path="../libpcap-tools" }
-log = { version = "0.4", features = ["max_level_debug", "release_max_level_warn"] }
+log = "0.4"
 lz4 = "1.23"
 tracing = { version="0.1", features=["log"] }
 tracing-appender = "0.2"

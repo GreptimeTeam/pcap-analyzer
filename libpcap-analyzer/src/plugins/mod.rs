@@ -11,8 +11,9 @@ mod community_id;
 #[cfg(feature = "plugin_examples")]
 mod examples;
 mod flows;
+pub mod greptimedb;
 #[cfg(feature = "plugins_debug")]
-mod hexdump;
+pub mod hexdump;
 #[cfg(feature = "plugin_ospf")]
 mod ospf;
 #[cfg(feature = "plugin_rusticata")]

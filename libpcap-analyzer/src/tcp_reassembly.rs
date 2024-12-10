@@ -179,7 +179,7 @@ impl TcpStream {
                 }
                 if tcp_flags & TcpFlags::SYN == 0 {
                     // not a SYN - usually happens at start of pcap if missed SYN
-                    warn!("First packet of a TCP stream is not a SYN");
+                    debug!("First packet of a TCP stream is not a SYN");
                     // test is ACK + data, and set established if possible
                     if tcp_flags & TcpFlags::ACK != 0 {
                         trace!("Trying to catch connection on the fly");
@@ -677,7 +677,7 @@ fn send_peer_segments(peer: &mut TcpPeer, rel_ack: Wrapping<u32>) -> Option<Vec<
 
     // is ACK acceptable?
     if rel_ack < peer.last_rel_ack {
-        warn!("ACK request for already ACKed data (ack < last_ack)");
+        debug!("ACK request for already ACKed data (ack < last_ack)");
         return None;
     }
 
@@ -965,7 +965,7 @@ impl TcpStreamReassembly {
 }
 
 pub(crate) fn finalize_tcp_streams(analyzer: &mut crate::analyzer::Analyzer) {
-    warn!("expiring all TCP connections");
+    debug!("expiring all TCP connections");
     for (flow_id, _stream) in analyzer.tcp_defrag.m.iter() {
         // TODO do we have anything to do?
         if let Some(flow) = analyzer.flows.get_flow(*flow_id) {

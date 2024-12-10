@@ -6,7 +6,6 @@ extern crate log;
 extern crate clap;
 use clap::{crate_version, Parser};
 use tracing::Level;
-use tracing_appender::rolling::{RollingFileAppender, Rotation};
 use tracing_subscriber::EnvFilter;
 
 extern crate flate2;
@@ -21,6 +20,7 @@ use std::sync::Arc;
 use flate2::read::GzDecoder;
 use xz2::read::XzDecoder;
 
+use libpcap_analyzer::plugins::greptimedb;
 use libpcap_analyzer::*;
 use libpcap_tools::{Config, PcapDataEngine, PcapEngine};
 
@@ -74,8 +74,11 @@ fn load_config(config: &mut Config, filename: &str) -> Result<(), io::Error> {
 fn main() -> io::Result<()> {
     let args = Args::parse();
 
-    // create plugin factory with all available plugins
-    let factory = plugins::PluginsFactory::default();
+    let mut factory = plugins::PluginsFactory::new();
+    #[cfg(feature = "plugins_debug")]
+    factory.add_builder(Box::new(libpcap_analyzer::plugins::hexdump::HexDumpBuilder));
+    factory.add_builder(Box::new(greptimedb::GreptimedbBuilder));
+
     // check if asked to list plugin builders
     if args.list_builders {
         println!("pcap-analyzer available plugin builders:");
@@ -94,20 +97,15 @@ fn main() -> io::Result<()> {
     }
     config.set("skip_index", args.skip);
 
-    // Open log file
-    let log_file = config.get("log_file").unwrap_or("pcap-analyzer.log");
-    let output_dir = config.get("output_dir").unwrap_or(".");
-    let file_appender = RollingFileAppender::new(Rotation::NEVER, output_dir, log_file);
     let env_filter = EnvFilter::try_from_env("PCAP_ANALYZER_LOG")
         .unwrap_or_else(|_| EnvFilter::from_default_env().add_directive(Level::INFO.into()));
     tracing_subscriber::fmt()
-        .with_writer(file_appender)
+        .with_writer(io::stdout)
         .with_env_filter(env_filter)
         //.json()
         //.with_span_events(FmtSpan::ENTER)
         //.with_thread_ids(true)
         //.with_max_level(tracing::Level::TRACE)
-        .with_ansi(false)
         .compact()
         .init();
 
@@ -208,7 +206,9 @@ fn main() -> io::Result<()> {
         let analyzer = ThreadedAnalyzer::new(registry, &config);
         Box::new(PcapDataEngine::new(analyzer, &config)) as Box<dyn PcapEngine>
     };
-    engine.run(&mut input_reader).expect("run analyzer");
+    engine
+        .run(&mut input_reader)
+        .unwrap_or_else(|e| panic!("run analyzer error: {e}"));
 
     // TODO: log results
 
