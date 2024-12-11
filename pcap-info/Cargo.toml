@@ -3,7 +3,6 @@ name = "pcap-info"
 version = "0.1.0"
 authors = ["Pierre Chifflier <chifflier@wzdftpd.net>"]
 edition = "2021"
-rust-version = "1.74"
 
 description = "Pcap file information tool"
 categories = ["network-programming"]

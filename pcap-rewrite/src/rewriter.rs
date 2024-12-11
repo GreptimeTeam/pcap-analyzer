@@ -26,7 +26,7 @@ pub struct Rewriter {
     snaplen: usize,
     output_linktype: Linktype,
     output_layer: usize,
-    writer: Box<dyn Writer>,
+    pub writer: Box<dyn Writer>,
     filters: Vec<Box<dyn Filter>>,
     stats: Stats,
     run_pre_analysis: bool,

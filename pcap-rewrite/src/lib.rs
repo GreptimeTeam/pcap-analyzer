@@ -85,9 +85,8 @@ fn get_reader(input_filename: &str) -> io::Result<Box<dyn Read>> {
         Box::new(io::stdin())
     } else {
         let path = Path::new(&input_filename);
-        let mut file = File::open(path).map_err(|e| {
+        let mut file = File::open(path).inspect_err(|_| {
             error!("Could not open input file '{}'", input_filename);
-            e
         })?;
 
         // https://en.wikipedia.org/wiki/LZ4_(compression_algorithm)

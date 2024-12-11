@@ -699,7 +699,7 @@ fn handle_l4_tcp(
             });
         }
         Err(e) => {
-            warn!("Tcp steam reassembly error: {:?}", e);
+            debug!("Tcp steam reassembly error: {:?}", e);
         }
     }
 

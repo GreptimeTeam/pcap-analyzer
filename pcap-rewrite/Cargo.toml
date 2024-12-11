@@ -3,7 +3,6 @@ name = "pcap-rewrite"
 version = "0.1.0"
 authors = ["Pierre Chifflier <chifflier@wzdftpd.net>"]
 edition = "2021"
-rust-version = "1.74"
 
 description = "Pcap file conversion/rewrite tool"
 categories = ["network-programming"]
@@ -30,8 +29,13 @@ name = "pcap-rewrite"
 path = "src/main.rs"
 doc = false
 
+[[bin]]
+name = "assemble-pcap"
+path = "src/greptimedb.rs"
+
 [dependencies]
 csv = "1.1.6"
+chrono = "0.4"
 clap = { version = "4.4", features = ["cargo", "derive"] }
 infer = "0.16.0"
 libpcap-analyzer = { version="0.1.0", path="../libpcap-analyzer" }
@@ -39,6 +43,7 @@ libpcap-tools = { version="0.1.0", path="../libpcap-tools" }
 log = { version = "0.4" }
 flate2 = { version = "1.0", features = ["zlib"], default-features = false }
 lz4 = "1.23"
+mysql = "25.0"
 pnet_packet = "0.35"
 tracing = { version="0.1", features=["log"] }
 tracing-subscriber = { version="0.3", features=["env-filter","fmt","json"] }

@@ -63,9 +63,8 @@ struct Args {
 fn load_config(config: &mut Config, filename: &str) -> Result<(), io::Error> {
     debug!("Loading configuration {}", filename);
     let path = Path::new(&filename);
-    let file = File::open(path).map_err(|e| {
+    let file = File::open(path).inspect_err(|_| {
         error!("Could not open config file '{}'", filename);
-        e
     })?;
     config.load_config(file)
 }

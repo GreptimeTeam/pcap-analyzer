@@ -280,11 +280,11 @@ impl TcpStream {
                             return Ok(None);
                         }
                     }
-                    warn!("Not an ACK");
+                    debug!("Not an ACK");
                 }
                 // TODO check seq, ack
                 if ack != dst.isn + Wrapping(1) {
-                    warn!("NEW/ACK: ack number is wrong");
+                    debug!("NEW/ACK: ack number is wrong");
                     return Err(TcpStreamError::HandshakeFailed);
                 }
                 src.status = TcpStatus::Established;
@@ -761,7 +761,7 @@ fn handle_overlap_first_last(peer: &mut TcpPeer, segment: &mut TcpSegment) {
     while let Some(next) = peer.segments.front() {
         if let Some(overlap_offset) = segment.overlap_offset(next) {
             let next_pcap_index = next.pcap_index;
-            warn!(
+            debug!(
                 "segments overlaps next candidate (offset={})",
                 overlap_offset
             );

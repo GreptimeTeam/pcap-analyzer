@@ -75,8 +75,6 @@ fn main() -> io::Result<()> {
     let args = Args::parse();
 
     let mut factory = plugins::PluginsFactory::new();
-    #[cfg(feature = "plugins_debug")]
-    factory.add_builder(Box::new(libpcap_analyzer::plugins::hexdump::HexDumpBuilder));
     factory.add_builder(Box::new(greptimedb::GreptimedbBuilder));
 
     // check if asked to list plugin builders
